@@ -27,5 +27,6 @@ int flash_guest(char *name);
 void list_guests(void);
 int stop_guest(char *name);
 int delete_guest(char *name);
+int duplicate_guest(char * name, char * newName);
 
 #endif /* __VM_MANAGER_H__*/

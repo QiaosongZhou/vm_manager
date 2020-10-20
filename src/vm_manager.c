@@ -47,6 +47,8 @@ static void help(int exit_err)
 		"\t\tFlash a CiV guest\n"
 		"\t-u, --update\n"
 		"\t\tUpdate an existing CiV guest\n"
+		"\t-t, --duplicate\n"
+		"\t\tDuplicate an existing CiV guest\n"
 		"\t-l, --list\n"
 		"\t\tList existing CiV guest\n"
 		"\t-v, --version\n"
@@ -115,13 +117,14 @@ int main(int argc, char *argv[])
 			{ "stop",    required_argument, 0, 'q' },
 			{ "flash",   required_argument, 0, 'f' },
 			{ "update",  required_argument, 0, 'u' },
+			{ "duplicate", required_argument, 0, 't'},
 			{ "list",    no_argument,       0, 'l' },
 			{ "version", no_argument,       0, 'v' },
 			{ "help",    no_argument,       0, 'h' },
 			{ 0, 0, 0, 0 }
 		};
 
-		c = getopt_long(argc, argv, "ci:d:b:q:f:u:lvh", long_options, &option_index);
+		c = getopt_long(argc, argv, "ci:d:b:q:f:u:t:lvh", long_options, &option_index);
 		if (c == -1)
 			break;
 
@@ -153,6 +156,10 @@ int main(int argc, char *argv[])
 		case 'u':
 			printf("update guest %s\n", optarg);
 			ret = create_guest(optarg);
+			break;
+		case 't':
+			printf("duplicate guest %s\n", optarg);
+			ret = duplicate_guest(optarg, NULL);
 			break;
 		case 'l':
 			list_guests();

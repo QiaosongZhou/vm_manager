@@ -404,6 +404,42 @@ int import_guest(char *in_path)
 	return 0;
 }
 
+int duplicate_guest(char * name, char * newName) {
+
+	int ret;
+	GKeyFile *gkf;
+	char cfg_file[MAX_PATH] = { 0 };
+	char new_cfg_file[MAX_PATH];
+
+	// Checks if name is empty
+
+	if (!name) {
+		fprintf(stderr, "%s: Invalid input param\n", __func__);
+		return -1;
+	}
+	snprintf(cfg_file, sizeof(cfg_file), "%s/%s.ini", civ_config_path, name);
+
+	// Create g_key instance and reads it form *.ini file
+
+	gkf = g_key_file_new();
+
+	if (!g_key_file_load_from_file(gkf, cfg_file, G_KEY_FILE_NONE, NULL)) {
+		g_warning("Error loading ini file :%s", cfg_file);
+		return -1;
+	}
+	if (newName) {
+		snprintf(new_cfg_file, sizeof(cfg_file), "%s/%s.ini", civ_config_path, newName);
+	} else {
+		snprintf(new_cfg_file, sizeof(cfg_file), "%s/%s_new.ini", civ_config_path, name);
+	}
+	
+	g_key_file_save_to_file(gkf, new_cfg_file, NULL);
+
+	g_key_file_free(gkf);
+
+	return 0;
+}
+
 void list_guests(void)
 {
 	struct dirent **vm_list;
